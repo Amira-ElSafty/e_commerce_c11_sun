@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_e_commerece_c11_sun/domain/di/di.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'core/my_bloc_observer.dart';
@@ -9,6 +10,7 @@ import 'core/routes_manager/routes.dart';
 
 void main() {
   Bloc.observer = MyBlocObserver();
+  configureDependencies();
   runApp(const MainApp());
 }
 
