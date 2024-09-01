@@ -11,10 +11,11 @@ class ApiManager {
   }
 
   Future<Response> getData(String endPoint,
-      {Map<String, dynamic>? queryParameters}) {
+      {Map<String, dynamic>? queryParameters, ResponseType? responseType}) {
     return dio.get(AppConstants.baseUrl + endPoint,
         queryParameters: queryParameters,
-        options: Options(validateStatus: ((status) => true)));
+        options: Options(
+            validateStatus: ((status) => true), responseType: responseType));
   }
 
   Future<Response> postData(String endPoint,

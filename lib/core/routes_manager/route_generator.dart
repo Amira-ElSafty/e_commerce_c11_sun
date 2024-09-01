@@ -15,7 +15,7 @@ class RouteGenerator {
       case Routes.cartRoute:
         return MaterialPageRoute(builder: (_) => const CartScreen());
       case Routes.mainRoute:
-        return MaterialPageRoute(builder: (_) => const MainLayout());
+        return MaterialPageRoute(builder: (_) => MainLayout());
 
       case Routes.productsScreenRoute:
         return MaterialPageRoute(builder: (_) => const ProductsScreen());
@@ -24,7 +24,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const ProductDetails());
 
       case Routes.signInRoute:
-        return MaterialPageRoute(builder: (_) => const LoginScreen());
+        return MaterialPageRoute(builder: (_) => LoginScreen());
 
       case Routes.splashScreenRoute:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
