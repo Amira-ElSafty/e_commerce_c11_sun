@@ -24,8 +24,8 @@ class HomeTabViewModel extends Cubit<HomeTabStates> {
       : super(HomeTabInitialState());
 
   //todo: hold data - handle logic
-  List<CategoryOrBrandEntity>? categoriesList;
-  List<CategoryOrBrandEntity>? brandsList;
+  List<CategoryOrBrandEntity> categoriesList = [];
+  List<CategoryOrBrandEntity> brandsList = [];
 
   static HomeTabViewModel get(context) => BlocProvider.of(context);
 
@@ -36,7 +36,9 @@ class HomeTabViewModel extends Cubit<HomeTabStates> {
       emit(HomeCategoryErrorState(failures: l));
     }, (response) {
       categoriesList = response.data ?? [];
-      emit(HomeCategorySuccessState(responseEntity: response));
+      if (brandsList.isNotEmpty) {
+        emit(HomeCategorySuccessState(responseEntity: response));
+      }
     });
   }
 
@@ -47,7 +49,9 @@ class HomeTabViewModel extends Cubit<HomeTabStates> {
       emit(HomeBrandsErrorState(failures: l));
     }, (response) {
       brandsList = response.data ?? [];
-      emit(HomeBrandsSuccessState(responseEntity: response));
+      if (categoriesList.isNotEmpty) {
+        emit(HomeBrandsSuccessState(responseEntity: response));
+      }
     });
   }
 }

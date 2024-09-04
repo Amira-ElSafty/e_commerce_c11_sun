@@ -1,21 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_e_commerece_c11_sun/core/widget/shared_preference_utils.dart';
 import 'package:flutter_e_commerece_c11_sun/domain/di/di.dart';
+import 'package:flutter_e_commerece_c11_sun/features/main_layout/home/presentation/cubit/home_tab_view_model.dart';
+import 'package:flutter_e_commerece_c11_sun/features/products_screen/presentation/cubit/product_screen_view_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'core/my_bloc_observer.dart';
 import 'core/routes_manager/route_generator.dart';
 import 'core/routes_manager/routes.dart';
 
-
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   configureDependencies();
-  runApp(const MainApp());
+  await SharedPreferenceUtils.init();
+  var token = SharedPreferenceUtils.getData(key: 'token');
+  String route;
+  if (token == null) {
+    route = Routes.signInRoute;
+  } else {
+    route = Routes.mainRoute;
+  }
+  runApp(MultiBlocProvider(
+      providers: [
+        BlocProvider<HomeTabViewModel>(
+          create: (context) => getIt<HomeTabViewModel>(),
+        ),
+        BlocProvider<ProductScreenViewModel>(
+          create: (context) => getIt<ProductScreenViewModel>(),
+        ),
+      ],
+      child: MainApp(
+        route: route,
+      )));
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  String route;
+
+  MainApp({required this.route});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +51,7 @@ class MainApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: child,
         onGenerateRoute: RouteGenerator.getRoute,
-        initialRoute: Routes.mainRoute,
+        initialRoute: route,
       ),
     );
   }

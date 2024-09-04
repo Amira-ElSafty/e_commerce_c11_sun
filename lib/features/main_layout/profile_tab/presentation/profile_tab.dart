@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_e_commerece_c11_sun/core/routes_manager/routes.dart';
+import 'package:flutter_e_commerece_c11_sun/core/widget/shared_preference_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -33,19 +35,24 @@ class ProfileTabState extends State<ProfileTab> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SvgPicture.asset(
-                SvgAssets.routeLogo,
-                height: AppSize.s40,
-                colorFilter: ColorFilter.mode(
-                  ColorManager.primary,
-                  BlendMode.srcIn,
-                ),
-              ),
-              SizedBox(height: AppSize.s20.h),
-              Text(
-                'Welcome, Mohamed',
-                style: getSemiBoldStyle(
-                    color: ColorManager.primary, fontSize: FontSize.s18),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Welcome, Mohamed',
+                    style: getSemiBoldStyle(
+                        color: ColorManager.primary, fontSize: FontSize.s18),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        //todo: remove token
+                        SharedPreferenceUtils.removeData(key: 'token');
+                        //todo: navigate to login
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            Routes.signInRoute, (route) => false);
+                      },
+                      icon: Icon(Icons.logout))
+                ],
               ),
               Text(
                 'mohamed.N@gmail.com',

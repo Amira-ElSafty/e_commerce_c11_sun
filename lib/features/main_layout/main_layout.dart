@@ -5,7 +5,6 @@ import 'package:flutter_e_commerece_c11_sun/features/main_layout/cubit/home_scre
 
 import '../../core/resources/assets_manager.dart';
 import '../../core/resources/color_manager.dart';
-import '../../core/widget/home_screen_app_bar.dart';
 
 class MainLayout extends StatelessWidget {
   HomeScreenViewModel viewModel = HomeScreenViewModel();
@@ -16,7 +15,6 @@ class MainLayout extends StatelessWidget {
       bloc: viewModel,
       builder: (context, state) {
         return Scaffold(
-          appBar: const HomeScreenAppBar(),
           extendBody: false,
           body: viewModel.tabs[viewModel.currentIndex],
           bottomNavigationBar: ClipRRect(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_e_commerece_c11_sun/core/widget/dialog_utils.dart';
+import 'package:flutter_e_commerece_c11_sun/core/widget/shared_preference_utils.dart';
 import 'package:flutter_e_commerece_c11_sun/domain/di/di.dart';
 import 'package:flutter_e_commerece_c11_sun/features/auth/presentation/screens/login/cubit/login_states.dart';
 import 'package:flutter_e_commerece_c11_sun/features/auth/presentation/screens/login/cubit/login_view_model.dart';
@@ -37,13 +38,16 @@ class LoginScreen extends StatelessWidget {
         } else if (state is LoginSuccessState) {
           DialogUtils.hideLoading(context);
           DialogUtils.showMessage(
-              context: context,
-              message: 'Login Successfully',
-              title: 'Success',
-              posActionName: 'Ok',
-              posAction: () {
-                Navigator.of(context).pushNamed(Routes.mainRoute);
-              });
+            context: context,
+            message: 'Login Successfully',
+            title: 'Success',
+            posActionName: 'Ok',
+          );
+          //todo: save token
+          SharedPreferenceUtils.saveData(
+              key: 'token', value: state.responseEntity.token);
+          //todo: navigate to home
+          Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
         }
       },
       child: Scaffold(

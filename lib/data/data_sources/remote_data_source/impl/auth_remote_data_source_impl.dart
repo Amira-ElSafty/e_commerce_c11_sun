@@ -56,6 +56,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             body: {"email": email, "password": password});
         var loginResponse = LoginResponseDto.fromJson(response.data);
         if (response.statusCode! >= 200 && response.statusCode! < 300) {
+          //todo: save token
+          // SharedPreferenceUtils.saveData(key: 'token', value: loginResponse.token);
           return Right(loginResponse);
         } else {
           return Left(ServerError(errorMessage: loginResponse.message!));

@@ -27,11 +27,15 @@ import '../../features/auth/presentation/screens/login/cubit/login_view_model.da
 import '../../features/auth/presentation/screens/register/cubit/register_view_model.dart'
     as _i15;
 import '../../features/main_layout/home/presentation/cubit/home_tab_view_model.dart'
-    as _i18;
+    as _i20;
+import '../../features/products_screen/presentation/cubit/product_screen_view_model.dart'
+    as _i21;
 import '../repository/auth_repository.dart' as _i6;
 import '../repository/home_repository.dart' as _i10;
-import '../use_cases/get_all_brands_use_case.dart' as _i16;
-import '../use_cases/get_all_categories_use_case.dart' as _i17;
+import '../use_cases/add_cart_use_case.dart' as _i16;
+import '../use_cases/get_all_brands_use_case.dart' as _i17;
+import '../use_cases/get_all_categories_use_case.dart' as _i18;
+import '../use_cases/get_all_products_use_case.dart' as _i19;
 import '../use_cases/login_use_case.dart' as _i12;
 import '../use_cases/register_use_case.dart' as _i14;
 
@@ -63,13 +67,21 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i14.RegisterUseCase(authRepository: gh<_i6.AuthRepository>()));
     gh.factory<_i15.RegisterViewModel>(() =>
         _i15.RegisterViewModel(registerUseCase: gh<_i14.RegisterUseCase>()));
-    gh.factory<_i16.GetAllBrandsUseCase>(() =>
-        _i16.GetAllBrandsUseCase(homeRepository: gh<_i10.HomeRepository>()));
-    gh.factory<_i17.GetAllCategoriesUseCase>(() => _i17.GetAllCategoriesUseCase(
+    gh.factory<_i16.AddCartUseCase>(
+        () => _i16.AddCartUseCase(homeRepository: gh<_i10.HomeRepository>()));
+    gh.factory<_i17.GetAllBrandsUseCase>(() =>
+        _i17.GetAllBrandsUseCase(homeRepository: gh<_i10.HomeRepository>()));
+    gh.factory<_i18.GetAllCategoriesUseCase>(() => _i18.GetAllCategoriesUseCase(
         homeRepository: gh<_i10.HomeRepository>()));
-    gh.factory<_i18.HomeTabViewModel>(() => _i18.HomeTabViewModel(
-          getAllCategoriesUseCase: gh<_i17.GetAllCategoriesUseCase>(),
-          getAllBrandsUseCase: gh<_i16.GetAllBrandsUseCase>(),
+    gh.factory<_i19.GetAllProductsUseCase>(() =>
+        _i19.GetAllProductsUseCase(homeRepository: gh<_i10.HomeRepository>()));
+    gh.factory<_i20.HomeTabViewModel>(() => _i20.HomeTabViewModel(
+          getAllCategoriesUseCase: gh<_i18.GetAllCategoriesUseCase>(),
+          getAllBrandsUseCase: gh<_i17.GetAllBrandsUseCase>(),
+        ));
+    gh.factory<_i21.ProductScreenViewModel>(() => _i21.ProductScreenViewModel(
+          getAllProductsUseCase: gh<_i19.GetAllProductsUseCase>(),
+          addCartUseCase: gh<_i16.AddCartUseCase>(),
         ));
     return this;
   }

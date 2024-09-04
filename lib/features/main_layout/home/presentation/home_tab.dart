@@ -1,45 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_e_commerece_c11_sun/core/resources/color_manager.dart';
-import 'package:flutter_e_commerece_c11_sun/core/widget/dialog_utils.dart';
-import 'package:flutter_e_commerece_c11_sun/domain/di/di.dart';
 import 'package:flutter_e_commerece_c11_sun/features/main_layout/home/presentation/cubit/home_tab_states.dart';
 import 'package:flutter_e_commerece_c11_sun/features/main_layout/home/presentation/cubit/home_tab_view_model.dart';
 import 'package:flutter_e_commerece_c11_sun/features/main_layout/home/presentation/widgets/announcement_widget.dart';
 import 'package:flutter_e_commerece_c11_sun/features/main_layout/home/presentation/widgets/custom_category_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/widget/home_screen_app_bar.dart';
 import 'widgets/custom_section_bar.dart';
 
 class HomeTab extends StatelessWidget {
-  HomeTabViewModel viewModel = getIt<HomeTabViewModel>();
-
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<HomeTabViewModel>(
-      create: (context) => viewModel
+    return BlocBuilder<HomeTabViewModel, HomeTabStates>(
+      bloc: HomeTabViewModel.get(context)
         ..getAllCategories()
         ..getAllBrands(),
-      child: BlocConsumer<HomeTabViewModel, HomeTabStates>(
-        listener: (context, state) {
-          if (state is HomeCategoryErrorState) {
-            DialogUtils.showMessage(
-                context: context, message: state.failures.errorMessage);
-          } else if (state is HomeBrandsErrorState) {
-            DialogUtils.showMessage(
-                context: context, message: state.failures.errorMessage);
-          } else if (state is HomeCategorySuccessState) {
-            DialogUtils.showMessage(
-                context: context,
-                message: state.responseEntity.results?.toString() ?? '0');
-          } else if (state is HomeBrandsSuccessState) {
-            DialogUtils.showMessage(
-                context: context,
-                message: state.responseEntity.results?.toString() ?? '0');
-          }
-        },
-        builder: (context, state) {
-          return SingleChildScrollView(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: HomeScreenAppBar(),
+          body: SingleChildScrollView(
             child: Column(
               children: [
                 AnnouncementWidget(),
@@ -47,48 +28,53 @@ class HomeTab extends StatelessWidget {
                   height: 20.h,
                 ),
                 CustomSectionBar(sectionName: 'Categories', function: () {}),
-                state is HomeCategorySuccessState
-                    ? SizedBox(
+                state is HomeCategoryLoadingState
+                    ? Center(
+                        child: CircularProgressIndicator(
+                        color: ColorManager.primaryDark,
+                      ))
+                    : SizedBox(
                         height: 270.h,
                         child: GridView.builder(
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             return CustomCategoryOrBrandWidget(
-                                list: state.responseEntity.data![index]);
+                                list: HomeTabViewModel.get(context)
+                                    .categoriesList[index]);
                           },
-                          itemCount: state.responseEntity.data!.length,
+                          itemCount: HomeTabViewModel.get(context)
+                              .categoriesList
+                              .length,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                           ),
                         ),
-                      )
-                    : Center(
-                        child: CircularProgressIndicator(
-                        color: ColorManager.primaryDark,
-                      )),
+                      ),
                 SizedBox(height: 12.h),
                 CustomSectionBar(sectionName: 'Brands', function: () {}),
-                state is HomeBrandsSuccessState
-                    ? SizedBox(
+                state is HomeBrandsLoadingState
+                    ? Center(
+                        child: CircularProgressIndicator(
+                        color: ColorManager.primaryDark,
+                      ))
+                    : SizedBox(
                         height: 270.h,
                         child: GridView.builder(
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
                             return CustomCategoryOrBrandWidget(
-                                list: state.responseEntity.data![index]);
+                                list: HomeTabViewModel.get(context)
+                                    .brandsList[index]);
                           },
-                          itemCount: state.responseEntity.data!.length,
+                          itemCount:
+                              HomeTabViewModel.get(context).brandsList.length,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                           ),
                         ),
-                      )
-                    : Center(
-                        child: CircularProgressIndicator(
-                        color: ColorManager.primaryDark,
-                      )),
+                      ),
                 // CustomSectionBar(
                 //   sectionNname: 'Most Selling Products',
                 //   function: () {},
@@ -116,9 +102,9 @@ class HomeTab extends StatelessWidget {
                 SizedBox(height: 12.h),
               ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
