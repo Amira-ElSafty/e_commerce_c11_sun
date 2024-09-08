@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_e_commerece_c11_sun/core/widget/shared_preference_utils.dart';
 import 'package:flutter_e_commerece_c11_sun/domain/di/di.dart';
+import 'package:flutter_e_commerece_c11_sun/features/cart/cubit/cart_screen_view_model.dart';
 import 'package:flutter_e_commerece_c11_sun/features/main_layout/home/presentation/cubit/home_tab_view_model.dart';
 import 'package:flutter_e_commerece_c11_sun/features/products_screen/presentation/cubit/product_screen_view_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,6 +30,9 @@ void main() async {
         ),
         BlocProvider<ProductScreenViewModel>(
           create: (context) => getIt<ProductScreenViewModel>(),
+        ),
+        BlocProvider<CartScreenViewModel>(
+          create: (context) => getIt<CartScreenViewModel>(),
         ),
       ],
       child: MainApp(

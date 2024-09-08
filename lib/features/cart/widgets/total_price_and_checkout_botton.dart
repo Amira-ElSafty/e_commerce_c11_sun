@@ -30,7 +30,7 @@ class TotalPriceAndCheckoutBotton extends StatelessWidget {
             ),
             SizedBox(height: 4.h),
             SizedBox(
-              width: 90.w,
+              width: 150.w,
               child: Text(
                 'EGP $totalPrice',
                 maxLines: 1,
@@ -43,7 +43,7 @@ class TotalPriceAndCheckoutBotton extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(width: 18.h),
+        SizedBox(width: 30.h),
 
         // Checkout button ================================
         Expanded(
